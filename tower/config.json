@@ -1,0 +1,45 @@
+{
+  "game-name":"tower",
+  "connector-dir": "js/",
+  "connector-source": "connector.js",
+  "index-dir": "./",
+  "index-source": "index.html",
+
+  "connector-interface": {
+    "set-name" : {
+      "function-name" : "setPlayerName",
+      "args" :  [
+        {
+          "type": "string",
+          "name" : "playerName"
+
+        }
+      ]
+    },
+    "set-age" : {
+      "function-name" : "setPlayerAge",
+      "args" :  [
+        {
+          "type": "int",
+          "name" : "playerAge"
+
+        }
+      ]
+    },
+    "set-init" :
+    {
+      "function-name": "init_tower",
+      "args" : [
+        {
+          "type": "json",
+          "name" : "parsedConfig"
+        },
+        {
+          "type": "string",
+          "name": "gameDir"
+        }
+      ]
+    }
+
+  }
+}

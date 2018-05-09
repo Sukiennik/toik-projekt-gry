@@ -1,0 +1,53 @@
+<!DOCTYPE HTML>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width">
+    <script src="interface-libs/jquery-1.11.3.min.js"></script>
+    <script src="interface-libs/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="interface-libs/bootstrap.min.css">
+    <script src="interface-libs/angular.min.js"></script>
+    <script src="interface.js"></script>
+
+    <style type="text/css">
+        #manual{
+            height: 90px;
+            line-height: 90px;
+            text-align: center;
+            border: 8px dashed #f69c55;
+        }
+        #btn{
+            margin-top: 50px;
+        }
+    </style>
+    <script type="text/javascript">
+        var Interface = angular.module(
+            'Interface', [],function ($interpolateProvider) {
+                $interpolateProvider.startSymbol('{{');
+                $interpolateProvider.endSymbol('}}');
+            }
+        );
+        Interface.constant('data',[]);
+        Interface.controller('InterfaceController', function InterfaceController($scope, data) {
+            $scope.onFirstGame = function(){
+                chooseFirstGame()
+            };
+            $scope.onSecondGame = function(){
+                chooseSecondGame()
+            }
+        });
+    </script>
+</head>
+<body>
+
+
+<div id="manual"  style="background-color:lightseagreen;" >
+    <h3>Interface Prototype</h3> <br/>
+</div>
+
+<div align="center" ng-app="Interface">
+    <buttontype="button"  id="btn" class="btn btn-info" ng-controller="InterfaceController" ng-click="onFirstGame()"> PLAY FIRST</buttontype="button">
+    <buttontype="button"  id="btn" class="btn btn-warning" ng-controller="InterfaceController" ng-click="onSecondGame()"> PLAY SECOND</buttontype="button">
+</div>
+</body>
+</html>
