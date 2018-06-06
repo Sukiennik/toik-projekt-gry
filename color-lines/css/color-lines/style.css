@@ -5,9 +5,16 @@ body{
 	font-size:14px;
 }
 
+/* Score */
+.board{
+	left: 1px;
+	position: relative;
+	bottom: 10px;
+}
+
 /* Forecast */
 .forecast{
-	width:120px;
+	width:500px;
 	height:40px;
 	margin:0 auto;
 }

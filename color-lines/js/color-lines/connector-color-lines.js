@@ -23,6 +23,26 @@ function sendScoreAndReturnControl(score){
     postScoreJson(postScore_endpoint, score);
 }
 
+function getColorGridSize() {
+    //var age = JSON.parse(window.name)["age"];
+    var age = 7;
+    if(age < 15) {
+        return 8;
+    } else {
+        return 10;
+    }
+}
+
+function getForecastSize() {
+    //var age = JSON.parse(window.name)["age"];
+    var age = 7;
+    if(age < 15) {
+        return 3;
+    } else {
+        return 6;
+    }
+}
+
 function postScoreJson(link, score) {
     var data = JSON.parse(window.name);
 

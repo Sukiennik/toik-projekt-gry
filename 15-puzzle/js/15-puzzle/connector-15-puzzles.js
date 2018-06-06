@@ -23,6 +23,30 @@ function sendScoreAndReturnControl(score){
     postScoreJson(postScore_endpoint, score);
 }
 
+function getGridSize() {
+    //var age = JSON.parse(window.name)["age"];
+    var age = 1;
+    if(age < 10) {
+        return 3;
+    } else {
+        return 4;
+    }
+}
+
+function getRemainingMoves() {
+    //var age = JSON.parse(window.name)["age"];
+    var age = 1;
+    if(age < 8) {
+        return 31 * 10 ;
+    } else if(age < 10) {
+        return 31 * 5;
+    } else if(age < 15) {
+        return 80 * 4;
+    } else {
+        return 80 * 2;
+    }
+}
+
 function postScoreJson(link, score) {
     var data = JSON.parse(window.name);
 

@@ -5,12 +5,24 @@
  * Released under the MIT license
  */
 (function(){
-	
+
+    var maxNumber = Math.pow(getGridSize(), 2) - 1
+    console.log("size: " + getGridSize())
+    console.log(("top number: " + Math.pow(getGridSize(), 2)-1))
+    var size = getGridSize()
 	var state = 1;
+    var moves = 0;
+    var remaining = getRemainingMoves();
+    var movesElement = document.querySelector('.moves');
+	var remainingElement = document.querySelector('.remaining');
 	var puzzle = document.getElementById('puzzle');
+
+    movesElement.innerHTML = moves;
+    remainingElement.innerHTML = remaining;
 
 	// Creates solved puzzle
 	solve();
+	scramble();
 	
 	// Listens for click on puzzle cells
 	puzzle.addEventListener('click', function(e){
@@ -38,14 +50,14 @@
 		puzzle.innerHTML = '';
 		
 		var n = 1;
-		for(var i = 0; i <= 3; i++){
-			for(var j = 0; j <= 3; j++){
+		for(var i = 0; i <= size-1; i++){
+			for(var j = 0; j <= size-1; j++){
 				var cell = document.createElement('span');
 				cell.id = 'cell-'+i+'-'+j;
 				cell.style.left = (j*80+1*j+1)+'px';
 				cell.style.top = (i*80+1*i+1)+'px';
 				
-				if(n <= 15){
+				if(n <= maxNumber){
 					cell.classList.add('number');
 					cell.classList.add((i%2==0 && j%2>0 || i%2>0 && j%2==0) ? 'dark' : 'light');
 					cell.innerHTML = (n++).toString();
@@ -59,7 +71,14 @@
 		
 	}
 
-	/**
+    function checkRemaining() {
+		if(remaining <= 0 ) {
+			console.log("game-over")
+			//sendScoreAndReturnControl(0)
+		}
+    }
+
+    /**
 	 * Shifts number cell to the empty cell
 	 * 
 	 */
@@ -83,7 +102,10 @@
 				
 				if(state == 1){
 					// Checks the order of numbers
+					movesElement.innerHTML = ++moves;
+					remainingElement.innerHTML = --remaining;
 					checkOrder();
+					checkRemaining();
 				}
 			}
 		}
@@ -146,9 +168,9 @@
 		var adjacent = [];
 		
 		// Gets all possible adjacent cells
-		if(row < 3){adjacent.push(getCell(row+1, col));}			
+		if(row < size-1){adjacent.push(getCell(row+1, col));}
 		if(row > 0){adjacent.push(getCell(row-1, col));}
-		if(col < 3){adjacent.push(getCell(row, col+1));}
+		if(col < size-1){adjacent.push(getCell(row, col+1));}
 		if(col > 0){adjacent.push(getCell(row, col-1));}
 		
 		return adjacent;
@@ -162,22 +184,24 @@
 	function checkOrder(){
 		
 		// Checks if the empty cell is in correct position
-		if(getCell(3, 3).className != 'empty'){
+		if(getCell(size-1, size-1).className != 'empty'){
 			return;
 		}
 	
 		var n = 1;
 		// Goes through all cells and checks numbers
-		for(var i = 0; i <= 3; i++){
-			for(var j = 0; j <= 3; j++){
-				if(n <= 15 && getCell(i, j).innerHTML != n.toString()){
+		for(var i = 0; i <= size-1; i++){
+			for(var j = 0; j <= size-1; j++){
+				if(n <= maxNumber && getCell(i, j).innerHTML != n.toString()){
 					// Order is not correct
 					return;
 				}
 				n++;
 			}
 		}
-		
+
+		sendScoreAndReturnControl(1);
+
 		// Puzzle is solved, offers to scramble it
 		if(confirm('Congrats, You did it! \nScramble the puzzle?')){
 			scramble();
@@ -190,11 +214,16 @@
 	 *
 	 */
 	function scramble(){
-	
+
 		if(state == 0){
 			return;
 		}
-		
+
+        moves = 0;
+        remaining = getRemainingMoves();
+        movesElement.innerHTML = moves;
+        remainingElement.innerHTML = remaining;
+
 		puzzle.removeAttribute('class');
 		state = 0;
 		

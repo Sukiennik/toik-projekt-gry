@@ -20,7 +20,9 @@ var Lines = (function(){
 	var gridElement,
 		forecastElement,
 		scoreElement,
-		recordElement;
+		recordElement,
+		gridSize,
+		forecastSize;
 
 	// Ball colors
 	var colors = {
@@ -59,6 +61,8 @@ var Lines = (function(){
 		score = 0;
 		blocked = false;
 		selected = null;
+        gridSize = getColorGridSize()
+        forecastSize = getForecastSize()
 
 		// Tries to get the record from the local storage
 		record = localStorage.getItem('lines-record') || 0;
@@ -83,9 +87,9 @@ var Lines = (function(){
 		// Clears grid element
 		gridElement.innerHTML = '';
 
-		for(var i=0; i<9; i++){
+		for(var i=0; i<gridSize; i++){
 			grid[i] = [];
-			for(var j=0; j<9; j++){
+			for(var j=0; j<gridSize; j++){
 
 				grid[i][j] = 0;
 
@@ -183,7 +187,7 @@ var Lines = (function(){
 		if( ! selected){
 			return;
 		}
-		
+
 		var to = e.currentTarget,
 			from = selected;
 
@@ -196,7 +200,7 @@ var Lines = (function(){
 			moveBall(from, to, path, function(){
 
 				var lines = getLines(to);
-				
+
 				// Checks if there are five-ball lines for destination cell
 				if(lines){
 					removeLines([lines]);
@@ -213,7 +217,7 @@ var Lines = (function(){
 							}
 						}
 
-						// Checks if five-ball lines are found after adding balls				
+						// Checks if five-ball lines are found after adding balls
 						if(lineSets.length > 0){
 							removeLines(lineSets);
 						} else {
@@ -226,7 +230,7 @@ var Lines = (function(){
 					});
 
 				}
-		
+
 			});
 		}
 
@@ -243,7 +247,7 @@ var Lines = (function(){
 		blocked = true;
 		var cells = [];
 
-		for(var i=0; i<3; i++){
+		for(var i=0; i<forecastSize; i++){
 
 			var emptyCells = getCells('.empty');
 			if(emptyCells.length > 0){
@@ -263,7 +267,7 @@ var Lines = (function(){
 
 		// Sets timeout for animation
 		setTimeout(function(){
-			each(getCells('.fadein'), function(cell){								
+			each(getCells('.fadein'), function(cell){
 				cell.classList.remove('fadein');
 			});
 
@@ -309,8 +313,8 @@ var Lines = (function(){
 
 		// Updates score
 		updateScore(scoreAdd);
-		
-		// Sets timeout for animation 
+
+		// Sets timeout for animation
 		setTimeout(function(){
 			each(getCells('.fadeout'), function(cell){
 				cell.className = 'empty';
@@ -352,7 +356,7 @@ var Lines = (function(){
 						blocked = false;
 						return callback();
 					}
-				
+
 					if(previous){
 						previous.className = 'empty';
 					}
@@ -374,7 +378,7 @@ var Lines = (function(){
 	 * @return array|bool
 	 */
 	function getLines(cell){
-		
+
 		var x = parseInt(cell.dataset.x),
 			y = parseInt(cell.dataset.y),
 			ball = colors.key(cell.classList.item(1)),
@@ -389,15 +393,15 @@ var Lines = (function(){
 			// Horizontal lines
 			if(l==grid[y][x-i]){lines[0].push([x-i,y]);} else {l = -1;}
 			if(r==grid[y][x+i]){lines[0].push([x+i,y]);} else {r = -1;}
-			
+
 			// Vertical lines
 			if(y-i>=0 && u==grid[y-i][x]){lines[1].push([x,y-i]);} else {u = -1;}
-			if(y+i<=8 && d==grid[y+i][x]){lines[1].push([x,y+i]);} else {d = -1;}
+			if(y+i<=gridSize-1 && d==grid[y+i][x]){lines[1].push([x,y+i]);} else {d = -1;}
 
 			// Diagonal lines
 			if(y-i>=0 && lu==grid[y-i][x-i]){lines[2].push([x-i,y-i]);} else {lu = -1;}
-			if(y+i<=8 && rd==grid[y+i][x+i]){lines[2].push([x+i,y+i]);} else {rd = -1;}
-			if(y+i<=8 && ld==grid[y+i][x-i]){lines[3].push([x-i,y+i]);} else {ld = -1;}
+			if(y+i<=gridSize-1 && rd==grid[y+i][x+i]){lines[2].push([x+i,y+i]);} else {rd = -1;}
+			if(y+i<=gridSize-1 && ld==grid[y+i][x-i]){lines[3].push([x-i,y+i]);} else {ld = -1;}
 			if(y-i>=0 && ru==grid[y-i][x+i]){lines[3].push([x+i,y-i]);} else {ru = -1;}
 
 			i++;
@@ -423,7 +427,7 @@ var Lines = (function(){
 		forecast = [];
 		forecastElement.innerHTML = '';
 
-		for(var i=0; i<3; i++){
+		for(var i=0; i<forecastSize; i++){
 			var ball = document.createElement('div');
 
 			forecast[i] = colors[rand(1, 7)];
@@ -449,8 +453,6 @@ var Lines = (function(){
 			recordElement.innerHTML = record = score;
 		}
 
-		//SENDING SCORE TO SERVER
-		sendScoreAndReturnControl(score);
 
 		scoreElement.innerHTML = score;
 
@@ -467,6 +469,19 @@ var Lines = (function(){
 		blocked = true;
 
 		//send information about game over to the server
+        if(gridSize === 10 ) {
+            if(score >= 40) {
+                sendScoreAndReturnControl(1)
+            } else {
+                sendScoreAndReturnControl(0)
+            }
+        } else {
+            if(score >= 30) {
+                sendScoreAndReturnControl(1)
+            } else {
+                sendScoreAndReturnControl(0)
+            }
+        }
 
 		// Shows score and offers to play again
 		if(confirm('Game over! Your score is '+score+'!\nPlay again?')){
@@ -532,9 +547,9 @@ var Lines = (function(){
 		 */
 		function init(startX, startY){
 
-			for(var i=0; i<9; i++){
+			for(var i=0; i<gridSize; i++){
 				nodes[i] = [];
-				for(var j=0; j<9; j++){
+				for(var j=0; j<gridSize; j++){
 					nodes[i][j] = {obstacle: grid[i][j], parent:0, f:0, g:0, h:0, x:j, y:i, closed: false};
 				}
 			}
@@ -622,7 +637,7 @@ var Lines = (function(){
 
 		/**
 		 * Reconstructs path
-		 * 
+		 *
 		 * @param object
 		 * @return array
 		 */
@@ -641,7 +656,7 @@ var Lines = (function(){
 
 		/**
 		 * Gets neighbor nodes
-		 * 
+		 *
 		 * @param object
 		 * @return array
 		 */
@@ -652,9 +667,9 @@ var Lines = (function(){
 				y = node.y;
 
 			if(y-1>=0){neighbors.push(nodes[y-1][x]);}
-			if(y+1<=8){neighbors.push(nodes[y+1][x]);}
+			if(y+1<=gridSize-1){neighbors.push(nodes[y+1][x]);}
 			if(x-1>=0){neighbors.push(nodes[y][x-1]);}
-			if(x+1<=8){neighbors.push(nodes[y][x+1]);}
+			if(x+1<=gridSize-1){neighbors.push(nodes[y][x+1]);}
 
 			return neighbors;
 
@@ -663,7 +678,7 @@ var Lines = (function(){
 
 		/**
 		 * Checks if node is opened
-		 * 
+		 *
 		 * @param object
 		 * @return array
 		 */
@@ -674,7 +689,7 @@ var Lines = (function(){
 					return true;
 				}
 			}
-			
+
 			return false;
 
 		}
