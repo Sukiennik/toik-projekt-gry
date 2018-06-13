@@ -11,14 +11,14 @@
     console.log(("top number: " + Math.pow(getGridSize(), 2)-1))
     var size = getGridSize()
 	var state = 1;
-    var moves = 0;
-    var remaining = getRemainingMoves();
-    var movesElement = document.querySelector('.moves');
-	var remainingElement = document.querySelector('.remaining');
+    //var moves = 0;
+    //var remaining = getRemainingMoves();
+    //var movesElement = document.querySelector('.moves');
+	//var remainingElement = document.querySelector('.remaining');
 	var puzzle = document.getElementById('puzzle');
 
-    movesElement.innerHTML = moves;
-    remainingElement.innerHTML = remaining;
+    //movesElement.innerHTML = moves;
+    //remainingElement.innerHTML = remaining;
 
 	// Creates solved puzzle
 	solve();
@@ -72,10 +72,10 @@
 	}
 
     function checkRemaining() {
-		if(remaining <= 0 ) {
-			console.log("game-over")
-			//sendScoreAndReturnControl(0)
-		}
+		//if(remaining <= 0 ) {
+		//	console.log("game-over")
+		//	//sendScoreAndReturnControl(0)
+		//}
     }
 
     /**
@@ -102,8 +102,8 @@
 				
 				if(state == 1){
 					// Checks the order of numbers
-					movesElement.innerHTML = ++moves;
-					remainingElement.innerHTML = --remaining;
+					//movesElement.innerHTML = ++moves;
+					//remainingElement.innerHTML = --remaining;
 					checkOrder();
 					checkRemaining();
 				}
@@ -219,10 +219,10 @@
 			return;
 		}
 
-        moves = 0;
-        remaining = getRemainingMoves();
-        movesElement.innerHTML = moves;
-        remainingElement.innerHTML = remaining;
+        //moves = 0;
+        //remaining = getRemainingMoves();
+        //movesElement.innerHTML = moves;
+        //remainingElement.innerHTML = remaining;
 
 		puzzle.removeAttribute('class');
 		state = 0;

@@ -1,5 +1,5 @@
 var config_endpoint = "/color-lines/config"
-var postScore_endpoint = "/game/end"
+var postScore_endpoint = "/game/15-puzzle"
 
 function main(){
     getJSON(config_endpoint, afterConfigFetched);

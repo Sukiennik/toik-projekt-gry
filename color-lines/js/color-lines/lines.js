@@ -447,6 +447,16 @@ var Lines = (function(){
 
 		score += add;
 
+        if(gridSize === 10 ) {
+            if(score >= 70) {
+                sendScoreAndReturnControl(1)
+            }
+        } else {
+            if(score >= 50) {
+                sendScoreAndReturnControl(1)
+            }
+        }
+
 		// Checks if record is beaten
 		if(score > record){
 			localStorage.setItem('lines-record', score);
@@ -470,13 +480,13 @@ var Lines = (function(){
 
 		//send information about game over to the server
         if(gridSize === 10 ) {
-            if(score >= 40) {
+            if(score >= 60) {
                 sendScoreAndReturnControl(1)
             } else {
                 sendScoreAndReturnControl(0)
             }
         } else {
-            if(score >= 30) {
+            if(score >= 40) {
                 sendScoreAndReturnControl(1)
             } else {
                 sendScoreAndReturnControl(0)

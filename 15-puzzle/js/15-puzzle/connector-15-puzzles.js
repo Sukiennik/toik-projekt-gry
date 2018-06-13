@@ -1,5 +1,5 @@
 var config_endpoint = "/15-puzzle/config"
-var postScore_endpoint = "/game/end"
+var postScore_endpoint = "/game/15-puzzle"
 
 function main(){
     getJSON(config_endpoint, afterConfigFetched);
@@ -25,17 +25,21 @@ function sendScoreAndReturnControl(score){
 
 function getGridSize() {
     //var age = JSON.parse(window.name)["age"];
-    var age = 1;
+    var age = 9;
     if(age < 10) {
         return 3;
-    } else {
+    } else if(age < 15) {
         return 4;
+    } else if(age < 20) {
+        return 5;
+    } else {
+        return 6;
     }
 }
 
 function getRemainingMoves() {
     //var age = JSON.parse(window.name)["age"];
-    var age = 1;
+    var age = 21;
     if(age < 8) {
         return 31 * 10 ;
     } else if(age < 10) {
