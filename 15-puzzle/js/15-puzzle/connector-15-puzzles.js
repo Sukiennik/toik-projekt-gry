@@ -24,8 +24,8 @@ function sendScoreAndReturnControl(score){
 }
 
 function getGridSize() {
-    //var age = JSON.parse(window.name)["age"];
-    var age = 9;
+    var age = JSON.parse(window.name)["age"];
+    //var age = 9;
     if(age < 10) {
         return 3;
     } else if(age < 15) {
@@ -38,8 +38,8 @@ function getGridSize() {
 }
 
 function getRemainingMoves() {
-    //var age = JSON.parse(window.name)["age"];
-    var age = 21;
+    var age = JSON.parse(window.name)["age"];
+    //var age = 21;
     if(age < 8) {
         return 31 * 10 ;
     } else if(age < 10) {

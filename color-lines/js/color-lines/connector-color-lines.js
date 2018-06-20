@@ -24,8 +24,8 @@ function sendScoreAndReturnControl(score){
 }
 
 function getColorGridSize() {
-    //var age = JSON.parse(window.name)["age"];
-    var age = 7;
+    var age = JSON.parse(window.name)["age"];
+    //var age = 7;
     if(age < 15) {
         return 8;
     } else {
@@ -34,8 +34,8 @@ function getColorGridSize() {
 }
 
 function getForecastSize() {
-    //var age = JSON.parse(window.name)["age"];
-    var age = 7;
+    var age = JSON.parse(window.name)["age"];
+    //var age = 7;
     if(age < 15) {
         return 3;
     } else {
